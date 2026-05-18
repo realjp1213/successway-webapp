@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SuccessWay — Caminos universitarios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1530;
+    --ink-soft:#6a6480;
+    --paper:#fbf7ef;
+    --card:#ffffff;
+    --line:#ece5d7;
+    --brand:#6c4cf1;
+    --brand-deep:#4a30c9;
+    --lime:#c8f54a;
+    --lime-deep:#a4d324;
+    --coral:#ff7a59;
+    --sky:#46c6ff;
+    --mint:#34d8a0;
+    --gold:#ffc943;
+    --shadow:0 16px 38px -18px rgba(45,30,90,.42);
+    --shadow-sm:0 8px 20px -12px rgba(45,30,90,.4);
+    --r:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Outfit',system-ui,sans-serif;color:var(--ink);
+    background:#d9d2e8;
+    min-height:100vh;display:flex;justify-content:center;align-items:flex-start;
+    padding:26px 14px;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{font-family:'Fraunces',Georgia,serif}
+
+  /* ---- phone frame so it reads as a mobile mockup ---- */
+  .phone{
+    width:392px;max-width:100%;background:var(--paper);border-radius:42px;
+    box-shadow:0 40px 90px -30px rgba(30,18,70,.6), 0 0 0 11px #14101f, 0 0 0 13px #2a2340;
+    overflow:hidden;position:relative;height:842px;display:flex;flex-direction:column;
+  }
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:148px;height:26px;background:#14101f;border-radius:0 0 18px 18px;z-index:40}
+
+  /* ---- top navigation ---- */
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:34px 20px 14px;background:var(--paper);
+    position:relative;z-index:30;border-bottom:1px solid var(--line);
+  }
+  .burger{
+    width:42px;height:42px;border-radius:13px;border:1px solid var(--line);background:var(--card);
+    display:grid;place-items:center;gap:4px;cursor:pointer;transition:.2s;box-shadow:var(--shadow-sm);
+  }
+  .burger span{display:block;width:18px;height:2.4px;background:var(--ink);border-radius:2px;transition:.25s}
+  .burger.x span:nth-child(1){transform:translateY(6.4px) rotate(45deg)}
+  .burger.x span:nth-child(2){opacity:0}
+  .burger.x span:nth-child(3){transform:translateY(-6.4px) rotate(-45deg)}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.06rem;letter-spacing:-.02em}
+  .brand .glyph{
+    width:30px;height:30px;border-radius:10px;background:linear-gradient(140deg,var(--brand),var(--brand-deep));
+    display:grid;place-items:center;color:#fff;font-family:'Fraunces';font-weight:900;font-size:.95rem;
+    transform:rotate(-6deg);box-shadow:var(--shadow-sm);
+  }
+  .avatar{
+    width:42px;height:42px;border-radius:50%;border:2px solid var(--brand);cursor:pointer;
+    background:linear-gradient(160deg,#ffd6a8,#ff9a76);display:grid;place-items:center;
+    font-weight:800;color:#7a3a14;font-size:.92rem;box-shadow:var(--shadow-sm);transition:.2s;
+  }
+  .avatar:hover,.burger:hover{transform:translateY(-2px)}
+
+  /* ---- scroll body ---- */
+  .body{flex:1;overflow-y:auto;padding:22px 20px 30px;scrollbar-width:none}
+  .body::-webkit-scrollbar{display:none}
+
+  .greet{margin-bottom:6px;font-size:.82rem;font-weight:600;color:var(--ink-soft)}
+  .body h1{font-size:1.62rem;line-height:1.18;letter-spacing:-.02em;margin-bottom:4px}
+  .body h1 span{position:relative;white-space:nowrap}
+  .body h1 span::after{content:"";position:absolute;left:-2px;right:-2px;bottom:2px;height:8px;background:var(--lime);z-index:-1;border-radius:3px}
+  .sub{color:var(--ink-soft);font-size:.88rem;margin:8px 0 22px;line-height:1.5}
+
+  .summary{
+    display:flex;gap:10px;margin-bottom:24px;
+  }
+  .stat{
+    flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:13px 12px;text-align:center;box-shadow:var(--shadow-sm);
+  }
+  .stat b{font-family:'Fraunces';font-weight:700;font-size:1.3rem;display:block;line-height:1}
+  .stat span{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-top:5px;display:block}
+
+  /* ---- uni path block ---- */
+  .block{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:20px;margin-bottom:18px;box-shadow:var(--shadow);cursor:pointer;
+    position:relative;overflow:hidden;transition:transform .22s, box-shadow .22s;
+    animation:rise .55s ease both;
+  }
+  .block:nth-child(2){animation-delay:.06s}
+  .block:nth-child(3){animation-delay:.12s}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .block:active{transform:scale(.985)}
+  .block:hover{transform:translateY(-3px);box-shadow:0 22px 44px -18px rgba(45,30,90,.5)}
+  .block::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:5px;
+  }
+  .block.reach::before{background:var(--coral)}
+  .block.target::before{background:var(--sky)}
+  .block.safe::before{background:var(--mint)}
+
+  .b-top{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+  .logo{
+    width:58px;height:58px;border-radius:17px;display:grid;place-items:center;flex-shrink:0;
+    font-family:'Fraunces';font-weight:900;font-size:1.4rem;color:#fff;box-shadow:var(--shadow-sm);
+  }
+  .logo.mich{background:linear-gradient(155deg,#00274c,#1b4f8a)}
+  .logo.ucl{background:linear-gradient(155deg,#003262,#c9a227)}
+  .logo.ub{background:linear-gradient(155deg,#8c1d40,#c9881f)}
+  .b-id{flex:1;min-width:0}
+  .b-id .name{font-family:'Fraunces';font-weight:700;font-size:1.16rem;line-height:1.2;letter-spacing:-.01em}
+  .b-id .loc{font-size:.78rem;color:var(--ink-soft);font-weight:600;margin-top:3px;display:flex;align-items:center;gap:5px}
+  .tier{
+    font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;
+    padding:5px 10px;border-radius:999px;flex-shrink:0;align-self:flex-start;
+  }
+  .tier.reach{background:#ffe9e2;color:#c14d2c}
+  .tier.target{background:#dff3ff;color:#1a7fb0}
+  .tier.safe{background:#dff7ec;color:#1d9168}
+
+  /* progress — percentage only */
+  .prog-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+  .prog-head .label{font-weight:700;font-size:.78rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.07em}
+  .prog-head .pct{font-family:'Fraunces';font-weight:700;font-size:1.4rem;color:var(--brand-deep);line-height:1}
+  .bar{height:13px;border-radius:999px;background:#efe8da;overflow:hidden;position:relative}
+  .bar i{
+    position:absolute;inset:0 auto 0 0;border-radius:999px;
+    background:linear-gradient(90deg,var(--brand),var(--mint));
+    width:0;transition:width 1.1s cubic-bezier(.65,0,.35,1);
+  }
+  .b-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+  .nextup{font-size:.78rem;color:var(--ink-soft);font-weight:600;display:flex;align-items:center;gap:7px;min-width:0}
+  .nextup .pin{flex-shrink:0}
+  .nextup b{color:var(--ink);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .go{
+    width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--paper);
+    display:grid;place-items:center;font-size:1rem;flex-shrink:0;transition:.2s;
+  }
+  .block:hover .go{background:var(--brand);transform:translateX(3px)}
+
+  /* add custom uni */
+  .add{
+    border:2px dashed #cdc4b2;background:transparent;border-radius:var(--r);
+    padding:18px;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
+    font-family:'Outfit';font-weight:700;color:var(--ink-soft);cursor:pointer;transition:.2s;font-size:.9rem;
+  }
+  .add:hover{border-color:var(--brand);color:var(--brand);background:#f4f0ff}
+
+  /* ---- slide-in menu (burger) ---- */
+  .scrim{position:absolute;inset:0;background:rgba(20,12,30,.5);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:.3s;z-index:45}
+  .scrim.on{opacity:1;pointer-events:auto}
+  .menu{
+    position:absolute;top:0;left:0;height:100%;width:80%;max-width:300px;background:var(--paper);
+    transform:translateX(-103%);transition:.34s cubic-bezier(.4,0,.2,1);z-index:46;
+    padding:32px 24px;box-shadow:24px 0 50px -20px rgba(0,0,0,.45);display:flex;flex-direction:column;
+  }
+  .menu.on{transform:none}
+  .menu .mhead{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;margin-bottom:30px}
+  .menu .mhead .glyph{width:30px;height:30px;border-radius:10px;background:linear-gradient(140deg,var(--brand),var(--brand-deep));display:grid;place-items:center;color:#fff;font-family:'Fraunces';font-weight:900;transform:rotate(-6deg)}
+  .menu a{
+    display:flex;align-items:center;gap:14px;padding:14px 12px;border-radius:13px;
+    color:var(--ink);text-decoration:none;font-weight:600;font-size:.96rem;transition:.18s;margin-bottom:3px;
+  }
+  .menu a .mi{width:22px;text-align:center;font-size:1.1rem}
+  .menu a:hover,.menu a.active{background:var(--card);box-shadow:var(--shadow-sm)}
+  .menu a.active{color:var(--brand-deep);font-weight:700}
+  .menu .spacer{flex:1}
+  .menu .signout{color:var(--coral);font-weight:700}
+
+  /* ---- account sheet (avatar) ---- */
+  .sheet{
+    position:absolute;left:0;right:0;bottom:0;background:var(--card);
+    border-radius:26px 26px 0 0;transform:translateY(110%);transition:.36s cubic-bezier(.4,0,.2,1);
+    z-index:46;padding:14px 22px 28px;box-shadow:0 -20px 50px -20px rgba(0,0,0,.4);
+  }
+  .sheet.on{transform:none}
+  .sheet .grip{width:42px;height:5px;border-radius:999px;background:#dcd4c4;margin:0 auto 18px}
+  .sheet .acct{display:flex;align-items:center;gap:14px;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:10px}
+  .sheet .acct .av{width:50px;height:50px;border-radius:50%;background:linear-gradient(160deg,#ffd6a8,#ff9a76);display:grid;place-items:center;font-weight:800;color:#7a3a14}
+  .sheet .acct .nm{font-weight:800;font-size:1.02rem}
+  .sheet .acct .em{font-size:.78rem;color:var(--ink-soft);font-weight:600}
+  .sheet a{display:flex;align-items:center;gap:14px;padding:14px 8px;color:var(--ink);text-decoration:none;font-weight:600;font-size:.95rem;border-radius:11px;transition:.15s}
+  .sheet a:hover{background:var(--paper)}
+  .sheet a .mi{width:22px;text-align:center;font-size:1.05rem}
+
+  .topnote{
+    background:#efeaff;border:1px solid #ddd2ff;border-radius:14px;padding:11px 14px;
+    font-size:.76rem;color:var(--brand-deep);font-weight:600;margin-bottom:20px;display:flex;gap:9px;line-height:1.45;
+  }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"></div>
+
+  <!-- TOP NAV -->
+  <div class="nav">
+    <div class="burger" id="burger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="brand"><span class="glyph">S</span>SuccessWay</div>
+    <div class="avatar" onclick="toggleSheet()">MR</div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+    <div class="greet">Hola, María 👋</div>
+    <h1>Tus <span>caminos universitarios</span></h1>
+    <p class="sub">Hemos emparejado 3 universidades según tus criterios. También puedes agregar un camino manualmente. Elige uno para continuar tu recorrido.</p>
+
+    <div class="summary">
+      <div class="stat"><b>3</b><span>Caminos</span></div>
+      <div class="stat"><b>20%</b><span>General</span></div>
+      <div class="stat"><b>4 ene</b><span>Próx. fecha</span></div>
+    </div>
+
+    <!-- BLOCK 1 -->
+    <div class="block target" onclick="goPath('University of Michigan')">
+      <span class="tier target" style="position:absolute;top:18px;right:18px">Objetivo</span>
+      <div class="b-top">
+        <div class="logo mich">M</div>
+        <div class="b-id">
+          <div class="name">University of Michigan</div>
+          <div class="loc">🇺🇸 Ann Arbor, EE. UU. · Lic. en CS</div>
+        </div>
+      </div>
+      <div class="prog-head">
+        <div class="label">Progreso</div>
+        <div class="pct">33%</div>
+      </div>
+      <div class="bar"><i data-w="33"></i></div>
+      <div class="b-foot">
+        <div class="nextup"><span class="pin">▶</span><span>Sigue:&nbsp;<b>Presentar TOEFL</b></span></div>
+        <div class="go">→</div>
+      </div>
+    </div>
+
+    <!-- BLOCK 2 -->
+    <div class="block reach" onclick="goPath('University of California, Berkeley')">
+      <span class="tier reach" style="position:absolute;top:18px;right:18px">Ambiciosa</span>
+      <div class="b-top">
+        <div class="logo ucl">B</div>
+        <div class="b-id">
+          <div class="name">UC Berkeley</div>
+          <div class="loc">🇺🇸 Berkeley, EE. UU. · Lic. en EECS</div>
+        </div>
+      </div>
+      <div class="prog-head">
+        <div class="label">Progreso</div>
+        <div class="pct">14%</div>
+      </div>
+      <div class="bar"><i data-w="14"></i></div>
+      <div class="b-foot">
+        <div class="nextup"><span class="pin">▶</span><span>Sigue:&nbsp;<b>Redactar ensayo personal</b></span></div>
+        <div class="go">→</div>
+      </div>
+    </div>
+
+    <!-- BLOCK 3 -->
+    <div class="block safe" onclick="goPath('Arizona State University')">
+      <span class="tier safe" style="position:absolute;top:18px;right:18px">Segura</span>
+      <div class="b-top">
+        <div class="logo ub">A</div>
+        <div class="b-id">
+          <div class="name">Arizona State University</div>
+          <div class="loc">🇺🇸 Tempe, EE. UU. · Ciencias de la Computación</div>
+        </div>
+      </div>
+      <div class="prog-head">
+        <div class="label">Progreso</div>
+        <div class="pct">12%</div>
+      </div>
+      <div class="bar"><i data-w="12"></i></div>
+      <div class="b-foot">
+        <div class="nextup"><span class="pin">▶</span><span>Sigue:&nbsp;<b>Preseleccionar programa</b></span></div>
+        <div class="go">→</div>
+      </div>
+    </div>
+
+    <button class="add" onclick="addUni()">＋ Agregar otra universidad</button>
+  </div>
+
+  <!-- BURGER MENU -->
+  <div class="scrim" id="scrim" onclick="closeAll()"></div>
+  <nav class="menu" id="menu">
+    <div class="mhead"><span class="glyph">S</span>SuccessWay</div>
+    <a href="#" class="active"><span class="mi">🎓</span>Mis caminos universitarios</a>
+    <a href="#"><span class="mi">🧭</span>Explorar universidades</a>
+    <a href="#"><span class="mi">💰</span>Becas</a>
+    <a href="#"><span class="mi">📚</span>Recursos y guías</a>
+    <a href="#"><span class="mi">💬</span>Hablar con un asesor</a>
+    <a href="#"><span class="mi">🔁</span>Repetir el cuestionario</a>
+    <div class="spacer"></div>
+    <a href="#"><span class="mi">⚙️</span>Configuración</a>
+    <a href="#" class="signout"><span class="mi">↪</span>Cerrar sesión</a>
+  </nav>
+
+  <!-- ACCOUNT SHEET -->
+  <div class="sheet" id="sheet">
+    <div class="grip"></div>
+    <div class="acct">
+      <div class="av">MR</div>
+      <div>
+        <div class="nm">María Rodríguez</div>
+        <div class="em">maria.r@email.com · Bogotá</div>
+      </div>
+    </div>
+    <a href="#"><span class="mi">👤</span>Cuenta y perfil</a>
+    <a href="#"><span class="mi">👪</span>Acceso para padres</a>
+    <a href="#"><span class="mi">🌐</span>Idioma · Español</a>
+    <a href="#"><span class="mi">🔔</span>Notificaciones</a>
+    <a href="#"><span class="mi">⚙️</span>Configuración</a>
+    <a href="#" style="color:var(--coral);font-weight:700"><span class="mi">↪</span>Cerrar sesión</a>
+  </div>
+</div>
+
+<script>
+  const bars=document.querySelectorAll('.bar i');
+  setTimeout(()=>bars.forEach(b=>b.style.width=b.dataset.w+'%'),350);
+
+  let menuOpen=false, sheetOpen=false;
+  function toggleMenu(){
+    menuOpen=!menuOpen;
+    document.getElementById('menu').classList.toggle('on',menuOpen);
+    document.getElementById('burger').classList.toggle('x',menuOpen);
+    document.getElementById('scrim').classList.toggle('on',menuOpen||sheetOpen);
+    if(menuOpen){sheetOpen=false;document.getElementById('sheet').classList.remove('on');}
+  }
+  function toggleSheet(){
+    sheetOpen=!sheetOpen;
+    document.getElementById('sheet').classList.toggle('on',sheetOpen);
+    document.getElementById('scrim').classList.toggle('on',sheetOpen||menuOpen);
+    if(sheetOpen){menuOpen=false;document.getElementById('menu').classList.remove('on');document.getElementById('burger').classList.remove('x');}
+  }
+  function closeAll(){
+    menuOpen=sheetOpen=false;
+    document.getElementById('menu').classList.remove('on');
+    document.getElementById('sheet').classList.remove('on');
+    document.getElementById('burger').classList.remove('x');
+    document.getElementById('scrim').classList.remove('on');
+  }
+  function goPath(name){
+    alert('→ Navegando a /uni-paths/'+name.toLowerCase().replace(/[^a-z]+/g,'-').replace(/^-|-$/g,'')+'\n\n(Esta es la próxima página que construiremos — el recorrido individual de la universidad.)');
+  }
+  function addUni(){
+    alert('Agrega una universidad que no esté en tus coincidencias.\nSuccessWay igual construye un camino completo para ella. (Maqueta — flujo simulado.)');
+  }
+</script>
+</body>
+</html>
