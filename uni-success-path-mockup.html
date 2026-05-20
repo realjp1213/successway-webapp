@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SuccessWay — Camino: Arizona State University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1530; --ink-soft:#6a6480; --paper:#fbf7ef; --card:#ffffff; --line:#ece5d7;
+    --brand:#6c4cf1; --brand-deep:#4a30c9; --lime:#c8f54a; --lime-deep:#a4d324;
+    --coral:#ff7a59; --sky:#46c6ff; --mint:#34d8a0; --gold:#ffc943;
+    --asu-maroon:#8c1d40; --asu-gold:#c9881f;
+    --shadow:0 16px 38px -18px rgba(45,30,90,.42); --shadow-sm:0 8px 20px -12px rgba(45,30,90,.4);
+    --r:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Outfit',system-ui,sans-serif;color:var(--ink);
+    background:#d9d2e8;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;
+    padding:26px 14px;-webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{font-family:'Fraunces',Georgia,serif}
+
+  .phone{
+    width:392px;max-width:100%;border-radius:42px;
+    box-shadow:0 40px 90px -30px rgba(30,18,70,.6), 0 0 0 11px #14101f, 0 0 0 13px #2a2340;
+    overflow:hidden;position:relative;height:842px;display:flex;flex-direction:column;background:#bfe3f5;
+  }
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:148px;height:26px;background:#14101f;border-radius:0 0 18px 18px;z-index:60}
+
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:34px 18px 12px;position:absolute;top:0;left:0;right:0;z-index:30;
+    background:linear-gradient(180deg,rgba(127,195,236,.95),rgba(127,195,236,0));
+  }
+  .burger{width:40px;height:40px;border-radius:12px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.7);backdrop-filter:blur(6px);display:grid;place-items:center;gap:4px;cursor:pointer;transition:.2s;box-shadow:var(--shadow-sm)}
+  .burger span{display:block;width:17px;height:2.3px;background:var(--ink);border-radius:2px;transition:.25s}
+  .burger.x span:nth-child(1){transform:translateY(6.3px) rotate(45deg)}
+  .burger.x span:nth-child(2){opacity:0}
+  .burger.x span:nth-child(3){transform:translateY(-6.3px) rotate(-45deg)}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1rem;letter-spacing:-.02em;color:var(--ink)}
+  .brand .glyph{width:28px;height:28px;border-radius:9px;background:linear-gradient(140deg,var(--brand),var(--brand-deep));display:grid;place-items:center;color:#fff;font-family:'Fraunces';font-weight:900;font-size:.9rem;transform:rotate(-6deg);box-shadow:var(--shadow-sm)}
+  .avatar{width:40px;height:40px;border-radius:50%;border:2px solid #fff;cursor:pointer;background:linear-gradient(160deg,#ffd6a8,#ff9a76);display:grid;place-items:center;font-weight:800;color:#7a3a14;font-size:.88rem;box-shadow:var(--shadow-sm);transition:.2s}
+  .avatar:hover,.burger:hover{transform:translateY(-2px)}
+
+  .scene{
+    flex:1;position:relative;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;
+    background:linear-gradient(180deg,
+      #7fc3ec 0%, #9fd4ef 14%, #bfe3f5 32%, #d6eef9 52%, #e9f5fb 72%, #fbf7ef 100%);
+  }
+  .scene::-webkit-scrollbar{display:none}
+  .world{position:relative;width:100%;min-height:1640px}
+
+  .cloud{position:absolute;background:#fff;border-radius:50%;filter:blur(.4px);opacity:.95;z-index:2}
+  .cloud::before,.cloud::after{content:"";position:absolute;background:#fff;border-radius:50%}
+  .c1{width:90px;height:90px;top:62px;left:24px;animation:drift 22s ease-in-out infinite}
+  .c1::before{width:60px;height:60px;top:24px;left:-30px}
+  .c1::after{width:70px;height:70px;top:18px;left:50px}
+  .c2{width:70px;height:70px;top:138px;right:28px;animation:drift 28s ease-in-out infinite reverse}
+  .c2::before{width:46px;height:46px;top:20px;left:-22px}
+  .c2::after{width:54px;height:54px;top:16px;left:40px}
+  .c3{width:60px;height:60px;top:232px;left:64px;opacity:.8;animation:drift 25s ease-in-out infinite}
+  .c3::after{width:46px;height:46px;top:14px;left:34px}
+  @keyframes drift{0%,100%{transform:translateX(0)}50%{transform:translateX(18px)}}
+
+  .uni-goal{position:absolute;top:148px;left:50%;transform:translateX(-50%);z-index:3;text-align:center;width:280px}
+  .uni-rays{position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:260px;height:210px;
+    background:radial-gradient(circle,rgba(255,201,67,.5),transparent 62%);border-radius:50%;animation:glow 4s ease-in-out infinite;z-index:-1}
+  @keyframes glow{0%,100%{opacity:.7;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.08)}}
+
+  .uni-photo-wrap{width:260px;height:130px;margin:0 auto 14px;border-radius:18px;overflow:hidden;
+    box-shadow:0 14px 30px -14px rgba(45,30,90,.5), 0 0 0 3px #fff, 0 0 0 4px rgba(140,29,64,.2);
+    animation:rise-in .9s cubic-bezier(.34,1.56,.64,1) both;position:relative}
+  .uni-photo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+  .uni-photo-wrap::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.18))}
+  @keyframes rise-in{from{transform:translateY(24px) scale(.7);opacity:0}to{transform:none;opacity:1}}
+
+  /* seal + name + deadline row */
+  .uni-row{display:flex;align-items:center;gap:11px;justify-content:center;margin-bottom:6px;flex-wrap:nowrap}
+  .uni-seal{width:64px;height:64px;flex-shrink:0;animation:seal-spin 1.1s cubic-bezier(.34,1.56,.64,1) both;filter:drop-shadow(0 6px 14px rgba(45,30,90,.4))}
+  @keyframes seal-spin{from{transform:rotate(-30deg) scale(.4);opacity:0}to{transform:none;opacity:1}}
+  .uni-seal svg{width:100%;height:100%;display:block}
+
+  .uni-info-stack{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1;align-items:flex-start}
+  .uni-name-tag{background:rgba(255,255,255,.96);backdrop-filter:blur(4px);border-radius:11px;padding:6px 11px;box-shadow:var(--shadow-sm);text-align:left;width:100%}
+  .uni-name-tag .nm{font-family:'Fraunces';font-weight:700;font-size:.84rem;line-height:1.12}
+  .uni-name-tag .lc{font-size:.62rem;color:var(--ink-soft);font-weight:600;margin-top:2px}
+
+  .deadline-pill{
+    background:#fff;border:1px solid var(--line);border-radius:11px;padding:6px 10px;
+    display:flex;align-items:center;gap:8px;cursor:pointer;width:100%;
+    text-align:left;box-shadow:var(--shadow-sm);transition:.2s;
+  }
+  .deadline-pill:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+  .deadline-pill.sent{background:linear-gradient(135deg,#dff7ec,#f4fcf8);border-color:#bdebd4}
+  .deadline-pill .dl-ic{width:24px;height:24px;border-radius:7px;background:linear-gradient(155deg,var(--coral),#c14d2c);display:grid;place-items:center;color:#fff;font-size:.7rem;flex-shrink:0;font-weight:800}
+  .deadline-pill.sent .dl-ic{background:linear-gradient(155deg,var(--mint),#1d9168)}
+  .deadline-pill .dl-mid{flex:1;min-width:0}
+  .deadline-pill .dl-k{font-size:.54rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);line-height:1}
+  .deadline-pill.sent .dl-k{color:#1d9168}
+  .deadline-pill .dl-v{font-family:'Fraunces';font-weight:700;font-size:.82rem;margin-top:2px;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .deadline-pill.sent .dl-v{color:#1d9168}
+  .deadline-pill .dl-edit{font-size:.7rem;color:var(--ink-soft);flex-shrink:0;transition:.2s}
+  .deadline-pill:hover .dl-edit{color:var(--brand)}
+
+  /* modal for deadline editing */
+  .dl-modal{position:absolute;left:50%;top:50%;transform:translate(-50%,-46%) scale(.92);
+    background:var(--paper);border-radius:22px;padding:24px 22px;width:84%;max-width:330px;
+    box-shadow:var(--shadow);z-index:80;opacity:0;pointer-events:none;transition:.32s cubic-bezier(.34,1.56,.64,1)}
+  .dl-modal.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+  .dl-modal h3{font-size:1.15rem;line-height:1.2;margin-bottom:5px}
+  .dl-modal .dlsub{font-size:.8rem;color:var(--ink-soft);font-weight:500;margin-bottom:16px;line-height:1.45}
+  .dl-modal label{display:block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:6px}
+  .dl-modal input[type=date]{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;font-family:'Outfit';font-size:.95rem;font-weight:600;color:var(--ink);background:var(--card)}
+  .dl-modal .dl-toggle{display:flex;align-items:center;gap:11px;margin-top:16px;padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--card);cursor:pointer}
+  .dl-modal .dl-toggle .tk{position:relative;width:40px;height:22px;border-radius:999px;background:#dcd4c4;flex-shrink:0;transition:.25s}
+  .dl-modal .dl-toggle .tk::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:var(--shadow-sm);transition:.25s}
+  .dl-modal .dl-toggle.on .tk{background:var(--mint)}
+  .dl-modal .dl-toggle.on .tk::after{transform:translateX(18px)}
+  .dl-modal .dl-toggle .tl{flex:1;min-width:0}
+  .dl-modal .dl-toggle .tl .tt{font-weight:700;font-size:.88rem}
+  .dl-modal .dl-toggle .tl .ts{font-size:.7rem;color:var(--ink-soft);font-weight:600;margin-top:2px}
+  .dl-modal .dl-actions{display:flex;gap:9px;margin-top:18px}
+  .dl-modal .dl-actions button{flex:1;border:0;border-radius:12px;padding:12px;font-family:'Outfit';font-weight:700;cursor:pointer;font-size:.88rem}
+  .dl-modal .dl-cancel{background:transparent;color:var(--ink-soft)}
+  .dl-modal .dl-save{background:var(--ink);color:var(--paper)}
+
+  .uni-goal.reached .uni-rays{animation:glowBig 2.4s ease-in-out infinite}
+  @keyframes glowBig{0%,100%{opacity:.85;transform:translateX(-50%) scale(1.1)}50%{opacity:1;transform:translateX(-50%) scale(1.25)}}
+
+  .bridge{position:absolute;left:0;right:0;bottom:115px;top:430px;z-index:3}
+  .blk,.ghost{position:absolute;width:62px;height:30px;border-radius:7px}
+  .blk{
+    background:linear-gradient(180deg,#8a6a44,#6f5232);border:2px solid #5a3f24;
+    box-shadow:0 5px 0 #4f381f, var(--shadow-sm);
+    transform:translateY(26px) scale(.4);opacity:0;
+    transition:transform .55s cubic-bezier(.34,1.56,.64,1),opacity .4s;
+  }
+  .blk.placed{transform:translateY(0) scale(1);opacity:1}
+  .blk::after{content:"";position:absolute;inset:3px 6px;border-radius:3px;
+    background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 8px,transparent 8px 16px)}
+  .blk.cap{background:linear-gradient(180deg,#c9a227,#a4801a);border-color:#7e6111;box-shadow:0 5px 0 #6b520f,var(--shadow-sm)}
+  .ghost{border:2px dashed rgba(90,63,36,.32);background:rgba(255,255,255,.16)}
+
+  /* ---- Duolingo-style climber character ---- */
+  .climber{position:absolute;z-index:5;width:54px;height:74px;
+    transition:left .85s cubic-bezier(.5,0,.3,1), bottom .85s cubic-bezier(.34,1.4,.5,1);pointer-events:none}
+  .climber svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 6px rgba(45,30,90,.25));animation:idle 2.6s ease-in-out infinite;transform-origin:50% 90%}
+  @keyframes idle{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-3px) rotate(1.5deg)}}
+  .climber.hop svg{animation:hop .85s ease}
+  @keyframes hop{
+    0%{transform:translateY(0) rotate(0)}
+    25%{transform:translateY(-22px) rotate(-8deg) scaleY(1.05)}
+    55%{transform:translateY(-30px) rotate(0)}
+    80%{transform:translateY(6px) rotate(4deg) scaleY(.92)}
+    100%{transform:translateY(0) rotate(0)}
+  }
+  /* gentle friendly arm sway */
+  .climber .arm-r{transform-origin:44px 36px;animation:armSway 3.4s ease-in-out infinite}
+  @keyframes armSway{0%,100%{transform:rotate(0)}50%{transform:rotate(-8deg)}}
+  .climber.hop .arm-r{animation:none}
+
+  /* natural blink — quick close every ~4s, with an occasional double-blink */
+  .climber .lid{transform-origin:center;transform:scaleY(0);animation:blink 4.2s ease-in-out infinite}
+  @keyframes blink{
+    0%, 92%   {transform:scaleY(0)}
+    94%, 96%  {transform:scaleY(1)}
+    97%, 100% {transform:scaleY(0)}
+  }
+
+  .ground{position:absolute;bottom:0;left:0;right:0;height:64px;z-index:4;
+    background:linear-gradient(180deg,#cde8b8,#a9d488);border-top:3px solid #8fbf6a}
+  .ground::before{content:"🌱  🌿   🌱    🌾   🌱  🌿    🌱";position:absolute;top:-3px;left:0;right:0;text-align:center;font-size:.8rem;letter-spacing:6px}
+  .start-pin{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);z-index:4;
+    background:#fff;border-radius:11px;padding:5px 12px;font-size:.72rem;font-weight:800;color:var(--ink-soft);box-shadow:var(--shadow-sm)}
+
+  .hud{position:absolute;top:82px;left:14px;right:14px;z-index:25;
+    background:rgba(255,255,255,.86);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.7);
+    border-radius:16px;padding:11px 15px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:13px}
+  .hud .htxt{flex:1;min-width:0}
+  .hud .htop{display:flex;justify-content:space-between;align-items:baseline;font-size:.72rem;font-weight:700;color:var(--ink-soft);margin-bottom:5px}
+  .hud .htop b{color:var(--ink)}
+  .hud .htop .hp{font-family:'Fraunces';font-weight:700;color:var(--brand-deep);font-size:.95rem}
+  .hud .hbar{height:9px;border-radius:999px;background:#e7e0d0;overflow:hidden}
+  .hud .hbar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--brand),var(--mint));transition:width .8s cubic-bezier(.65,0,.35,1)}
+
+  .clbar{
+    position:absolute;left:0;right:0;bottom:0;z-index:35;cursor:pointer;
+    background:linear-gradient(180deg,#fff,#fbf7ef);border-top:1px solid var(--line);
+    border-radius:22px 22px 0 0;padding:12px 20px 18px;box-shadow:0 -14px 34px -18px rgba(45,30,90,.4);transition:transform .2s;
+  }
+  .clbar:active{transform:translateY(2px)}
+  .clbar .grab{width:42px;height:5px;border-radius:999px;background:#dcd4c4;margin:0 auto 11px}
+  .clbar .crow{display:flex;align-items:center;gap:13px}
+  .clbar .cic{width:42px;height:42px;border-radius:13px;background:linear-gradient(155deg,var(--brand),var(--brand-deep));display:grid;place-items:center;font-size:1.2rem;flex-shrink:0;box-shadow:var(--shadow-sm)}
+  .clbar .cmid{flex:1;min-width:0}
+  .clbar .cmid .ct{font-weight:800;font-size:.98rem}
+  .clbar .cmid .cs{font-size:.76rem;color:var(--ink-soft);font-weight:600;margin-top:1px}
+  .clbar .cup{width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:1rem;flex-shrink:0;animation:nudge 2.4s ease-in-out infinite}
+  @keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+  .scrim{position:absolute;inset:0;background:rgba(20,12,30,.5);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:.3s;z-index:50}
+  .scrim.on{opacity:1;pointer-events:auto}
+  .clfull{position:absolute;inset:0;background:var(--paper);z-index:55;display:flex;flex-direction:column;
+    transform:translateY(100%);transition:transform .42s cubic-bezier(.32,.72,0,1)}
+  .clfull.on{transform:none}
+  .clfull .clhead{padding:30px 20px 16px;border-bottom:1px solid var(--line);flex-shrink:0;position:relative}
+  .clfull .clhead .cldown{position:absolute;top:26px;right:18px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:1rem;color:var(--ink-soft);cursor:pointer}
+  .clfull .clhead .kk{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:6px}
+  .clfull .clhead h2{font-size:1.28rem;line-height:1.18;letter-spacing:-.01em;padding-right:42px}
+  .clfull .clhead .hs{font-size:.82rem;color:var(--ink-soft);font-weight:500;margin-top:6px;line-height:1.45}
+  .clfull .reqtabs{display:flex;gap:8px;overflow-x:auto;padding:14px 20px 0;flex-shrink:0;scrollbar-width:none}
+  .clfull .reqtabs::-webkit-scrollbar{display:none}
+  .rtab{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:9px 14px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-weight:700;font-size:.79rem;cursor:pointer;transition:.18s;color:var(--ink-soft);white-space:nowrap}
+  .rtab.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .rtab.rdone{border-color:var(--mint);color:var(--mint)}
+  .rtab.on.rdone{background:var(--mint);color:#fff;border-color:var(--mint)}
+  .clfull .clbody{flex:1;overflow-y:auto;padding:18px 20px 30px;scrollbar-width:none}
+  .clfull .clbody::-webkit-scrollbar{display:none}
+
+  .reqcard{background:linear-gradient(135deg,#efeaff,#f7f4ff);border:1px solid #ddd2ff;border-radius:18px;padding:16px;margin-bottom:18px}
+  .reqcard .rqk{font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--brand);margin-bottom:5px}
+  .reqcard h3{font-size:1.12rem;line-height:1.2}
+  .reqcard .rqs{font-size:.78rem;color:var(--ink-soft);font-weight:500;margin-top:6px;line-height:1.45}
+  .reqcard .rqp{display:flex;align-items:center;gap:10px;margin-top:13px}
+  .reqcard .rqp .rb{flex:1;height:8px;border-radius:999px;background:#fff;overflow:hidden}
+  .reqcard .rqp .rb i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--mint));border-radius:999px;transition:width .6s}
+  .reqcard .rqp .rn{font-size:.72rem;font-weight:800;color:var(--brand-deep);white-space:nowrap}
+
+  .child{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-sm)}
+  .child.cdone{border-color:#bdebd4;background:#f4fcf8}
+  .chead{display:flex;align-items:center;gap:12px;padding:15px;cursor:pointer}
+  .chead .cbox{width:25px;height:25px;border-radius:8px;border:2px solid #d8d0bf;flex-shrink:0;display:grid;place-items:center;color:#fff;font-size:.82rem;transition:.25s;background:#fff}
+  .child.cdone .chead .cbox{background:var(--mint);border-color:var(--mint)}
+  .chead .cmeta{flex:1;min-width:0}
+  .chead .cmeta .cname{font-weight:700;font-size:.95rem;line-height:1.2}
+  .child.cdone .chead .cmeta .cname{color:var(--ink-soft)}
+  .chead .cmeta .cprog{font-size:.71rem;color:var(--ink-soft);font-weight:600;margin-top:3px}
+  .chead .chev{color:var(--ink-soft);font-size:.8rem;transition:.3s;flex-shrink:0}
+  .child.open .chead .chev{transform:rotate(90deg)}
+  .chead .autochip{font-size:.64rem;color:#1d9168;background:#dff7ec;padding:3px 9px;border-radius:999px;font-weight:800;white-space:nowrap}
+
+  .gwrap{max-height:0;overflow:hidden;transition:max-height .42s ease}
+  .child.open .gwrap{max-height:1600px}
+  .gwrap-inner{padding:0 15px 14px}
+  .ghint{font-size:.73rem;color:var(--ink-soft);font-weight:600;background:#faf6ec;border-left:3px solid var(--lime-deep);padding:9px 12px;border-radius:0 10px 10px 0;margin-bottom:13px;line-height:1.45}
+
+  .gchild{border:1px solid var(--line);border-radius:13px;margin-bottom:10px;background:#fffdf8;overflow:hidden}
+  .gchild.gdone{border-color:#bdebd4;background:#f4fcf8}
+  .ghead{display:flex;align-items:center;gap:10px;padding:12px}
+  .ghead .gbox{width:22px;height:22px;border-radius:50%;border:2px solid #d8d0bf;flex-shrink:0;display:grid;place-items:center;color:#fff;font-size:.72rem;transition:.25s;background:#fff}
+  .gchild.gdone .ghead .gbox{background:var(--mint);border-color:var(--mint)}
+  .ghead .gn{flex:1;font-weight:700;font-size:.87rem;line-height:1.25}
+  .gchild.gdone .ghead .gn{color:var(--ink-soft);text-decoration:line-through}
+  .ghead .gtoggle{font-size:.69rem;font-weight:700;color:var(--brand);background:#efeaff;border:0;padding:6px 11px;border-radius:999px;cursor:pointer;flex-shrink:0}
+  .gchild.gdone .ghead .gtoggle{display:none}
+  .opts{max-height:0;overflow:hidden;transition:max-height .4s ease}
+  .gchild.oopen .opts{max-height:660px}
+  .opts-in{padding:2px 12px 13px}
+  .opt-row{display:flex;align-items:center;gap:11px;padding:12px;border:1px solid var(--line);border-radius:11px;background:#fff;margin-bottom:8px;cursor:pointer;transition:.18s}
+  .opt-row:hover{border-color:var(--brand);transform:translateX(3px)}
+  .opt-row .oic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:.95rem;flex-shrink:0;color:#fff;font-weight:800;font-family:'Fraunces'}
+  .opt-row .om{flex:1;min-width:0}
+  .opt-row .om .ot{font-weight:700;font-size:.84rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .opt-row .om .od{font-size:.72rem;color:var(--ink-soft);font-weight:500;margin-top:2px;line-height:1.35}
+  .ptag{font-size:.55rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:3px 7px;border-radius:999px}
+  .ptag.partner{background:#efeaff;color:var(--brand-deep)}
+  .ptag.free{background:#dff7ec;color:#1d9168}
+  .ptag.paid{background:#fff1d6;color:#9a6a12}
+  .opt-row .opick{background:var(--ink);color:var(--paper);border:0;padding:8px 12px;border-radius:9px;font-weight:700;font-size:.72rem;cursor:pointer;flex-shrink:0;font-family:'Outfit'}
+  .disc{font-size:.67rem;color:var(--ink-soft);background:#f3efe6;border:1px dashed #d8cfbd;border-radius:10px;padding:9px 11px;line-height:1.45;margin-top:3px}
+  .disc b{color:var(--ink)}
+
+  .toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%) translateY(180px);
+    background:var(--ink);color:#fff;padding:15px 22px;border-radius:18px;display:flex;align-items:center;gap:13px;
+    box-shadow:var(--shadow);z-index:70;transition:transform .5s cubic-bezier(.34,1.56,.64,1);max-width:330px}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .toast .tbig{font-size:1.7rem;flex-shrink:0}
+  .toast .tt{font-weight:800;font-size:.92rem;line-height:1.2}
+  .toast .ts{font-size:.74rem;color:var(--lime);font-weight:700;margin-top:2px}
+  .toast.big{background:linear-gradient(135deg,var(--brand-deep),#6a3df0)}
+  .toast.big .ts{color:#d8f56a}
+  .confetti{position:absolute;width:9px;height:9px;z-index:69;pointer-events:none}
+
+  .menu{position:absolute;top:0;left:0;height:100%;width:80%;max-width:300px;background:var(--paper);transform:translateX(-103%);transition:.34s cubic-bezier(.4,0,.2,1);z-index:56;padding:32px 24px;box-shadow:24px 0 50px -20px rgba(0,0,0,.45);display:flex;flex-direction:column}
+  .menu.on{transform:none}
+  .menu .mhead{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;margin-bottom:30px}
+  .menu .mhead .glyph{width:30px;height:30px;border-radius:10px;background:linear-gradient(140deg,var(--brand),var(--brand-deep));display:grid;place-items:center;color:#fff;font-family:'Fraunces';font-weight:900;transform:rotate(-6deg)}
+  .menu a{display:flex;align-items:center;gap:14px;padding:14px 12px;border-radius:13px;color:var(--ink);text-decoration:none;font-weight:600;font-size:.96rem;transition:.18s;margin-bottom:3px}
+  .menu a .mi{width:22px;text-align:center;font-size:1.1rem}
+  .menu a:hover,.menu a.active{background:var(--card);box-shadow:var(--shadow-sm)}
+  .menu a.active{color:var(--brand-deep);font-weight:700}
+  .menu .spacer{flex:1}
+  .sheet{position:absolute;left:0;right:0;bottom:0;background:var(--card);border-radius:26px 26px 0 0;transform:translateY(110%);transition:.36s cubic-bezier(.4,0,.2,1);z-index:56;padding:14px 22px 28px;box-shadow:0 -20px 50px -20px rgba(0,0,0,.4)}
+  .sheet.on{transform:none}
+  .sheet .grip{width:42px;height:5px;border-radius:999px;background:#dcd4c4;margin:0 auto 18px}
+  .sheet .acct{display:flex;align-items:center;gap:14px;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:10px}
+  .sheet .acct .av{width:50px;height:50px;border-radius:50%;background:linear-gradient(160deg,#ffd6a8,#ff9a76);display:grid;place-items:center;font-weight:800;color:#7a3a14}
+  .sheet .acct .nm{font-weight:800;font-size:1.02rem}
+  .sheet .acct .em{font-size:.78rem;color:var(--ink-soft);font-weight:600}
+  .sheet a{display:flex;align-items:center;gap:14px;padding:14px 8px;color:var(--ink);text-decoration:none;font-weight:600;font-size:.95rem;border-radius:11px;transition:.15s}
+  .sheet a:hover{background:var(--paper)}
+  .sheet a .mi{width:22px;text-align:center;font-size:1.05rem}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"></div>
+
+  <div class="nav">
+    <div class="burger" id="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    <div class="brand"><span class="glyph">S</span>SuccessWay</div>
+    <div class="avatar" onclick="toggleSheet()">MR</div>
+  </div>
+
+  <div class="hud">
+    <div class="htxt">
+      <div class="htop"><span><b id="reqDone">0</b>/5 requisitos · <span id="blkDone">0</span> bloques</span><span class="hp" id="pctNum">0%</span></div>
+      <div class="hbar"><i id="pctBar"></i></div>
+    </div>
+  </div>
+
+  <div class="scene" id="scene">
+    <div class="world" id="world">
+      <div class="cloud c1"></div>
+      <div class="cloud c2"></div>
+      <div class="cloud c3"></div>
+
+      <div class="uni-goal" id="uniGoal">
+        <div class="uni-rays"></div>
+
+        <!-- CAMPUS PHOTO — swap the src below with your licensed image (your own, CC, or ASU press kit). -->
+        <div class="uni-photo-wrap">
+          <img id="campusPhoto" alt="Campus de Arizona State University"
+               src="images-mockup/arizona-state-university-mockup.png"/>
+        </div>Í
+
+        <!-- SEAL + INFO STACK (name + deadline) -->
+        <div class="uni-row">
+          <div class="uni-seal" aria-label="Sello de Arizona State University">
+            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+              <g id="burst" fill="var(--asu-maroon)"><g id="teeth"></g></g>
+              <circle cx="60" cy="60" r="54" fill="var(--asu-maroon)"/>
+              <circle cx="60" cy="60" r="48" fill="#fff"/>
+              <defs>
+                <path id="topArc" d="M 16 60 A 44 44 0 0 1 104 60" fill="none"/>
+                <path id="botArc" d="M 18 60 A 42 42 0 0 0 102 60" fill="none"/>
+              </defs>
+              <text font-family="Fraunces, Georgia, serif" font-weight="800" font-size="8.5" fill="var(--asu-maroon)" letter-spacing="1">
+                <textPath href="#topArc" startOffset="50%" text-anchor="middle">ARIZONA STATE UNIVERSITY</textPath>
+              </text>
+              <text font-family="Fraunces, Georgia, serif" font-weight="800" font-size="8" fill="var(--asu-maroon)" letter-spacing="2">
+                <textPath href="#botArc" startOffset="50%" text-anchor="middle">• 1885 •</textPath>
+              </text>
+              <circle cx="60" cy="60" r="34" fill="none" stroke="var(--asu-maroon)" stroke-width="1.4"/>
+              <circle cx="60" cy="60" r="26" fill="var(--asu-maroon)"/>
+              <g transform="translate(60 60)">
+                <path d="M -14 -14 L 14 -14 L 14 8 Q 14 16 0 18 Q -14 16 -14 8 Z" fill="#fff"/>
+                <rect x="-13" y="-13" width="26" height="5" fill="var(--asu-maroon)"/>
+                <text y="-9" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="900" font-size="3.4" fill="#fff" letter-spacing=".3">DITAT DEUS</text>
+                <path d="M -13 8 L -7 -2 L -2 4 L 3 -4 L 9 3 L 13 -1 L 13 8 Z" fill="var(--asu-maroon)"/>
+                <circle cx="4" cy="0" r="2.4" fill="var(--asu-maroon)"/>
+                <g stroke="var(--asu-maroon)" stroke-width=".6" stroke-linecap="round">
+                  <line x1="4" y1="-5" x2="4" y2="-3.5"/>
+                  <line x1="0" y1="-2" x2="1.5" y2="-1"/>
+                  <line x1="8" y1="-2" x2="6.5" y2="-1"/>
+                  <line x1="-1" y1="2" x2=".5" y2="1.4"/>
+                  <line x1="9" y1="2" x2="7.5" y2="1.4"/>
+                </g>
+                <g fill="var(--asu-maroon)">
+                  <circle cx="-9" cy="2" r="1.3"/>
+                  <rect x="-10" y="3" width="2" height="4.5" rx=".5"/>
+                  <line x1="-11" y1="4" x2="-12" y2="8" stroke="var(--asu-maroon)" stroke-width=".7"/>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <div class="uni-info-stack">
+            <div class="uni-name-tag">
+              <div class="nm">Arizona State University</div>
+              <div class="lc">🇺🇸 Tempe · Ciencias de la Computación</div>
+            </div>
+
+            <!-- DEADLINE PILL -->
+            <div class="deadline-pill" id="dlPill" onclick="openDeadline()">
+              <div class="dl-ic" id="dlIc">📅</div>
+              <div class="dl-mid">
+                <div class="dl-k" id="dlK">Fecha límite</div>
+                <div class="dl-v" id="dlV">4 ene 2026</div>
+              </div>
+              <div class="dl-edit">✎</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bridge" id="bridge"></div>
+
+      <div class="climber" id="climber">
+        <!-- Duolingo-style character: friendly, round-headed, with hair (no hat) -->
+        <svg viewBox="0 0 54 74" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="shirt" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#7d5cff"/>
+              <stop offset="1" stop-color="#5536e0"/>
+            </linearGradient>
+            <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f4c79a"/>
+              <stop offset="1" stop-color="#e2a973"/>
+            </linearGradient>
+            <linearGradient id="hair" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#4a2e15"/>
+              <stop offset="1" stop-color="#2d1a08"/>
+            </linearGradient>
+          </defs>
+
+          <!-- LEGS -->
+          <g class="legs">
+            <rect x="14" y="56" width="10" height="14" rx="4" fill="#2a3550"/>
+            <rect x="30" y="56" width="10" height="14" rx="4" fill="#2a3550"/>
+            <ellipse cx="19" cy="71" rx="6.5" ry="3" fill="#1a1a26"/>
+            <ellipse cx="35" cy="71" rx="6.5" ry="3" fill="#1a1a26"/>
+          </g>
+
+          <!-- BODY -->
+          <path d="M 12 38 Q 12 32 18 32 L 36 32 Q 42 32 42 38 L 43 56 Q 43 60 39 60 L 15 60 Q 11 60 11 56 Z"
+                fill="url(#shirt)"/>
+          <path d="M 22 32 L 27 38 L 32 32 Z" fill="#3d22b8"/>
+
+          <!-- LEFT ARM -->
+          <g>
+            <rect x="6" y="36" width="8" height="18" rx="4" fill="url(#shirt)"/>
+            <circle cx="10" cy="54" r="4.5" fill="url(#skin)"/>
+          </g>
+
+          <!-- RIGHT ARM (friendly wave) -->
+          <g class="arm-r">
+            <rect x="40" y="36" width="8" height="18" rx="4" fill="url(#shirt)"/>
+            <circle cx="44" cy="54" r="4.5" fill="url(#skin)"/>
+          </g>
+
+          <!-- HEAD -->
+          <g>
+            <!-- neck shadow -->
+            <rect x="22" y="29" width="10" height="5" fill="#c98a5e"/>
+
+            <!-- face -->
+            <ellipse cx="27" cy="20" rx="14" ry="13" fill="url(#skin)"/>
+
+            <!-- ears -->
+            <ellipse cx="13.5" cy="22" rx="2" ry="2.6" fill="#d99a6c"/>
+            <ellipse cx="40.5" cy="22" rx="2" ry="2.6" fill="#d99a6c"/>
+
+            <!-- HAIR (now the full top of the head) -->
+            <path d="M 13 14 Q 14 5 22 3 Q 27 1 32 3 Q 40 5 41 14 Q 41 18 39 19 Q 37 14 27 14 Q 17 14 15 19 Q 13 18 13 14 Z"
+                  fill="url(#hair)"/>
+            <!-- a little hair tuft on the forehead -->
+            <path d="M 24 8 Q 27 6 30 8 Q 28 11 24 10 Z" fill="#5a3520"/>
+
+            <!-- EYEBROWS -->
+            <path d="M 19 17 Q 22 15.5 25 17" stroke="#2a1a08" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+            <path d="M 29 17 Q 32 15.5 35 17" stroke="#2a1a08" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+
+            <!-- EYES with natural blink -->
+            <g>
+              <!-- sclera -->
+              <ellipse cx="22" cy="21" rx="2.6" ry="3" fill="#fff"/>
+              <ellipse cx="32" cy="21" rx="2.6" ry="3" fill="#fff"/>
+              <!-- pupils -->
+              <circle cx="22.5" cy="21.5" r="1.5" fill="#1a1530"/>
+              <circle cx="32.5" cy="21.5" r="1.5" fill="#1a1530"/>
+              <!-- shine highlights -->
+              <circle cx="22.9" cy="20.7" r=".55" fill="#fff"/>
+              <circle cx="32.9" cy="20.7" r=".55" fill="#fff"/>
+              <!-- BLINK eyelids: skin-colored rects that scaleY from 0 to 1 to cover the eye -->
+              <g class="blink-lids">
+                <rect x="19.2" y="17.8" width="5.6" height="6.4" rx="2.8" fill="url(#skin)" class="lid"/>
+                <rect x="29.2" y="17.8" width="5.6" height="6.4" rx="2.8" fill="url(#skin)" class="lid"/>
+              </g>
+            </g>
+
+            <!-- NOSE -->
+            <path d="M 26.5 22.5 Q 27 25 28.5 25" stroke="#b07a4e" stroke-width="1" fill="none" stroke-linecap="round"/>
+
+            <!-- SMILE -->
+            <path d="M 23 27 Q 27 30 31 27" stroke="#3d2418" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+            <!-- cheeks -->
+            <ellipse cx="18" cy="25" rx="2.4" ry="1.6" fill="#ff9d85" opacity=".65"/>
+            <ellipse cx="36" cy="25" rx="2.4" ry="1.6" fill="#ff9d85" opacity=".65"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="start-pin">🏁 Aquí empiezas</div>
+      <div class="ground"></div>
+    </div>
+  </div>
+
+  <div class="clbar" onclick="openChecklist()">
+    <div class="grab"></div>
+    <div class="crow">
+      <div class="cic">📋</div>
+      <div class="cmid">
+        <div class="ct">Lista de tareas</div>
+        <div class="cs" id="clbarSub">Toca para construir el siguiente bloque del puente</div>
+      </div>
+      <div class="cup">↑</div>
+    </div>
+  </div>
+
+  <div class="clfull" id="clfull">
+    <div class="clhead">
+      <button class="cldown" onclick="closeChecklist()">▾</button>
+      <div class="kk">Tu lista para Arizona State</div>
+      <h2>Construye el puente hacia tu universidad</h2>
+      <div class="hs">Cada tarea o requisito que completas agrega un bloque. Puedes avanzar en cualquier orden.</div>
+    </div>
+    <div class="reqtabs" id="reqtabs"></div>
+    <div class="clbody" id="clbody"></div>
+  </div>
+
+  <div class="toast" id="toast">
+    <span class="tbig" id="toastIcon">🎉</span>
+    <div><div class="tt" id="toastTitle"></div><div class="ts" id="toastSub"></div></div>
+  </div>
+
+  <!-- DEADLINE EDIT MODAL -->
+  <div class="dl-modal" id="dlModal">
+    <h3>Fecha límite de solicitud</h3>
+    <div class="dlsub">Esta es la fecha en que debes haber enviado tu solicitud. Puedes modificarla si la universidad cambia su calendario.</div>
+    <label for="dlInput">Modificar fecha</label>
+    <input type="date" id="dlInput" value="2026-01-04">
+    <div class="dl-toggle" id="dlToggle" onclick="toggleSent()">
+      <div class="tk"></div>
+      <div class="tl">
+        <div class="tt">Solicitud enviada</div>
+        <div class="ts">Marca esta casilla cuando hayas enviado tu solicitud.</div>
+      </div>
+    </div>
+    <div class="dl-actions">
+      <button class="dl-cancel" onclick="closeDeadline()">Cancelar</button>
+      <button class="dl-save" onclick="saveDeadline()">Guardar</button>
+    </div>
+  </div>
+
+  <div class="scrim" id="scrim" onclick="closeChrome()"></div>
+  <nav class="menu" id="menu">
+    <div class="mhead"><span class="glyph">S</span>SuccessWay</div>
+    <a href="#" onclick="goBack();return false"><span class="mi">🎓</span>Mis caminos universitarios</a>
+    <a href="#"><span class="mi">🧭</span>Explorar universidades</a>
+    <a href="#"><span class="mi">💰</span>Becas</a>
+    <a href="#"><span class="mi">📚</span>Recursos y guías</a>
+    <a href="#"><span class="mi">💬</span>Hablar con un asesor</a>
+    <a href="#"><span class="mi">🔁</span>Repetir el cuestionario</a>
+    <div class="spacer"></div>
+    <a href="#"><span class="mi">⚙️</span>Configuración</a>
+    <a href="#" style="color:var(--coral);font-weight:700"><span class="mi">↪</span>Cerrar sesión</a>
+  </nav>
+  <div class="sheet" id="sheet">
+    <div class="grip"></div>
+    <div class="acct">
+      <div class="av">MR</div>
+      <div><div class="nm">María Rodríguez</div><div class="em">maria.r@email.com · Bogotá</div></div>
+    </div>
+    <a href="#"><span class="mi">👤</span>Cuenta y perfil</a>
+    <a href="#"><span class="mi">👪</span>Acceso para padres</a>
+    <a href="#"><span class="mi">🌐</span>Idioma · Español</a>
+    <a href="#"><span class="mi">🔔</span>Notificaciones</a>
+    <a href="#"><span class="mi">⚙️</span>Configuración</a>
+    <a href="#" style="color:var(--coral);font-weight:700"><span class="mi">↪</span>Cerrar sesión</a>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   3-LEVEL DEPENDENCY TREE
+   Parent requirement -> child task -> grandchild (multi-option)
+   Every grandchild AND every child completion = +1 BRIDGE BLOCK.
+   Bridge builds bottom (ground/student) -> top (university in clouds).
+   ============================================================ */
+const REQS=[
+  { id:'toefl', icon:'🎧', kind:'Requisito · Prueba de inglés', title:'Obtener 90+ en el TOEFL',
+    sub:'Requisito de admisión para estudiantes internacionales. Es absoluto: lo cumples o no.',
+    children:[
+      { id:'toefl-prep', name:'Prepararse para el TOEFL',
+        hint:'Se marca solo cuando completes todas sus sub-tareas. Puedes hacerlas en cualquier orden.',
+        grand:[
+          { id:'g-diag', name:'Hacer un examen diagnóstico', opts:[
+            {ic:'F',cls:'free',tag:'Gratis',t:'Simulacro gratuito ETS',d:'Prueba oficial de práctica para ubicar tu nivel.'}]},
+          { id:'g-course', name:'Tomar un curso de preparación', opts:[
+            {ic:'SW',cls:'partner',tag:'Socio SuccessWay',t:'TuPrep LATAM',d:'Tutores colombianos, horario nocturno. Soporte en español.'},
+            {ic:'ET',cls:'paid',tag:'Pago',t:'ETS Official Prep',d:'Curso oficial del creador del examen, 4 semanas.'},
+            {ic:'YT',cls:'free',tag:'Gratis',t:'Ruta gratuita curada',d:'Lista de recursos abiertos que armamos para ti.'}]},
+          { id:'g-mock', name:'Aprobar 2 simulacros completos', opts:[
+            {ic:'SW',cls:'partner',tag:'Socio SuccessWay',t:'Simulacros con TuPrep',d:'Dos exámenes cronometrados con retroalimentación.'},
+            {ic:'F',cls:'free',tag:'Gratis',t:'Banco de simulacros libre',d:'Practica por tu cuenta con la guía de la app.'}]},
+        ]},
+      { id:'toefl-take', name:'Presentar el examen oficial',
+        hint:'Reserva tu fecha cuando te sientas listo.',
+        grand:[
+          { id:'g-book', name:'Reservar e ir al examen', opts:[
+            {ic:'ET',cls:'paid',tag:'Pago',t:'Reservar TOEFL iBT (oficial)',d:'Agenda en el centro autorizado más cercano a Bogotá.'},
+            {ic:'SW',cls:'partner',tag:'Socio SuccessWay',t:'Reservar con asesoría',d:'Te ayudamos a elegir fecha y sede. Comisión de socio.'}]},
+        ]},
+    ]},
+  { id:'app', icon:'📝', kind:'Requisito · Solicitud', title:'Enviar la solicitud',
+    sub:'Reúne y envía todos los componentes antes del 4 de enero.',
+    children:[
+      { id:'app-essay', name:'Redactar el ensayo personal', hint:'650 palabras. Se marca solo al terminar todas las sub-tareas.',
+        grand:[
+          { id:'g-brain', name:'Generar ideas y estructura', opts:[
+            {ic:'AI',cls:'free',tag:'Incluido',t:'Coach de IA de SuccessWay',d:'Genera enfoques y devuelve estructura al instante.'}]},
+          { id:'g-edit', name:'Revisar 2 borradores', opts:[
+            {ic:'PE',cls:'partner',tag:'Socio SuccessWay',t:'Editores PenPoint',d:'Un ex lector de admisiones edita dos borradores.'},
+            {ic:'AI',cls:'free',tag:'Gratis',t:'Auto-revisión guiada',d:'Lista de control de la app para revisar tú mismo.'}]},
+        ]},
+      { id:'app-recs', name:'Conseguir 2 cartas de recomendación', hint:'Pide a tus profesores con 4 semanas de antelación.',
+        grand:[
+          { id:'g-ask', name:'Solicitar a 2 profesores', opts:[
+            {ic:'F',cls:'free',tag:'Gratis',t:'Plantilla de solicitud',d:'Correo modelo en español e inglés listo para enviar.'}]},
+        ]},
+      { id:'app-submit', name:'Enviar en el portal', hint:'El paso final de la solicitud.',
+        grand:[
+          { id:'g-submit', name:'Completar y enviar Common App', opts:[
+            {ic:'F',cls:'free',tag:'Gratis',t:'Guía paso a paso',d:'Te acompañamos por cada sección del portal.'}]},
+        ]},
+    ]},
+  { id:'finance', icon:'💰', kind:'Requisito · Financiación', title:'Asegurar la financiación',
+    sub:'Demostrar cómo cubrirás los costos: beca, ayuda o fondos.',
+    children:[
+      { id:'fin-scholar', name:'Postular a becas', hint:'Aplica a las becas para las que calificas.',
+        grand:[
+          { id:'g-find', name:'Identificar becas elegibles', opts:[
+            {ic:'SW',cls:'partner',tag:'Socio SuccessWay',t:'Buscador de becas',d:'Filtramos becas por tu perfil colombiano.'},
+            {ic:'F',cls:'free',tag:'Gratis',t:'Lista pública curada',d:'Becas abiertas para estudiantes internacionales.'}]},
+          { id:'g-apply-s', name:'Enviar 3 postulaciones', opts:[
+            {ic:'F',cls:'free',tag:'Gratis',t:'Seguimiento en la app',d:'Controla fechas y estado de cada beca.'}]},
+        ]},
+    ]},
+  { id:'visa', icon:'🛂', kind:'Requisito · Visa', title:'Visa F-1 aprobada',
+    sub:'Trámite consular. Es absoluto. Puede ir en paralelo a lo demás.',
+    children:[
+      { id:'visa-i20', name:'Recibir el formulario I-20', hint:'Lo emite la universidad tras la admisión.',
+        grand:[
+          { id:'g-i20', name:'Solicitar el I-20 a la universidad', opts:[
+            {ic:'F',cls:'free',tag:'Gratis',t:'Guía del proceso I-20',d:'Qué enviar y cuándo, explicado simple.'}]},
+        ]},
+      { id:'visa-interview', name:'Pasar la entrevista consular', hint:'En la embajada de EE. UU. en Bogotá.',
+        grand:[
+          { id:'g-ds160', name:'Completar formulario DS-160', opts:[
+            {ic:'F',cls:'free',tag:'Gratis',t:'Asistente DS-160',d:'Te guiamos campo por campo en español.'}]},
+          { id:'g-prep-int', name:'Preparar la entrevista', opts:[
+            {ic:'SW',cls:'partner',tag:'Socio SuccessWay',t:'Simulacro de entrevista',d:'Practica con un asesor. Comisión de socio.'},
+            {ic:'F',cls:'free',tag:'Gratis',t:'Preguntas frecuentes',d:'Banco de preguntas reales y cómo responder.'}]},
+        ]},
+    ]},
+  { id:'decision', icon:'📨', kind:'Requisito · Resultado', title:'Recibir y aceptar la admisión',
+    sub:'El paso final: confirmar tu lugar, tiquetes y alojamiento.',
+    children:[
+      { id:'dec-wait', name:'Confirmar la decisión', hint:'Se desbloquea tras enviar la solicitud.',
+        grand:[
+          { id:'g-accept', name:'Aceptar la oferta y reservar cupo', opts:[
+            {ic:'F',cls:'free',tag:'Gratis',t:'Lista de cierre',d:'Pasos finales: depósito, alojamiento, viaje.'}]},
+        ]},
+    ]},
+];
+
+const state={}; REQS.forEach(r=>r.children.forEach(c=>c.grand.forEach(g=>state[g.id]=false)));
+let activeTab=0;
+
+const childDone=c=>c.grand.every(g=>state[g.id]);
+const reqDone=r=>r.children.every(c=>childDone(c));
+function blocksDone(){let s=0;REQS.forEach(r=>r.children.forEach(c=>{c.grand.forEach(g=>{if(state[g.id])s++;});if(childDone(c))s++;}));return s;}
+function blocksTotal(){let t=0;REQS.forEach(r=>r.children.forEach(c=>{t+=c.grand.length;t+=1;}));return t;}
+
+const bridgeEl=document.getElementById('bridge');
+function bridgeGeo(i,total){
+  const H=bridgeEl.clientHeight, W=bridgeEl.clientWidth;
+  const frac= total<=1 ? 0 : i/(total-1);
+  const y=H-30-frac*(H-50);                          // i=0 near ground, last near uni
+  const x=W/2-31 + Math.sin(frac*Math.PI*5)*56;      // gentle zig-zag bridge
+  return {x,y,H,W};
+}
+function layoutBridge(){
+  const total=blocksTotal(), done=blocksDone();
+  bridgeEl.innerHTML='';
+  for(let i=0;i<total;i++){
+    const {x,y}=bridgeGeo(i,total);
+    const el=document.createElement('div');
+    const isCap=(i===total-1);
+    if(i<done){ el.className='blk'+(isCap?' cap':'')+' placed'; }
+    else if(i===done){ el.className='blk'+(isCap?' cap':''); requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('placed'))); }
+    else { el.className='ghost'; }
+    el.style.left=x+'px'; el.style.top=y+'px';
+    bridgeEl.appendChild(el);
+  }
+  placeClimber(done,total);
+  updateHUD();
+}
+function placeClimber(done,total){
+  const c=document.getElementById('climber');
+  const idx=Math.max(0,Math.min(done-1,total-1));
+  const {x,y,H}=bridgeGeo(done===0?0:idx,total);
+  // center the 54px-wide character on the 62px block (so it sits centered on block top)
+  c.style.left=(x+4)+'px';
+  // climber's feet stand on top of the last placed block (block is 30px tall);
+  // climber's feet stand on top of the last placed block (block is 30px tall);
+  // bridge is offset 430 from top, 115 from ground; character height is 74
+  c.style.bottom=(115 + (H - y) - 4)+'px';
+}
+function updateHUD(){
+  const dn=REQS.filter(reqDone).length, b=blocksDone(), t=blocksTotal();
+  const pct=Math.round(b/t*100);
+  document.getElementById('reqDone').textContent=dn;
+  document.getElementById('blkDone').textContent=b+'/'+t;
+  document.getElementById('pctNum').textContent=pct+'%';
+  document.getElementById('pctBar').style.width=pct+'%';
+  if(dn===REQS.length) document.getElementById('uniGoal').classList.add('reached');
+  document.getElementById('clbarSub').textContent =
+    dn===REQS.length ? '¡Puente completo! Tu universidad te espera 🎓'
+                      : 'Toca para construir el siguiente bloque del puente';
+}
+
+function openChecklist(){ renderTabs(); renderReq(activeTab); document.getElementById('clfull').classList.add('on'); }
+function closeChecklist(){ document.getElementById('clfull').classList.remove('on'); }
+
+function renderTabs(){
+  const tb=document.getElementById('reqtabs'); tb.innerHTML='';
+  REQS.forEach((r,i)=>{
+    const d=reqDone(r);
+    const el=document.createElement('div');
+    el.className='rtab'+(i===activeTab?' on':'')+(d?' rdone':'');
+    el.innerHTML=`${r.icon} ${r.title.length>18?r.title.slice(0,17)+'…':r.title} ${d?'✓':''}`;
+    el.onclick=()=>{activeTab=i;renderTabs();renderReq(i);};
+    tb.appendChild(el);
+  });
+}
+function renderReq(i){
+  const r=REQS[i], body=document.getElementById('clbody');
+  const totalC=r.children.length, doneC=r.children.filter(childDone).length;
+  let html=`<div class="reqcard">
+      <div class="rqk">${r.kind}</div><h3>${r.title}</h3>
+      <div class="rqs">${r.sub}</div>
+      <div class="rqp"><div class="rb"><i style="width:${doneC/totalC*100}%"></i></div>
+        <span class="rn">${doneC}/${totalC} tareas</span></div></div>`;
+  r.children.forEach(c=>{
+    const cd=childDone(c), gd=c.grand.filter(g=>state[g.id]).length;
+    html+=`<div class="child${cd?' cdone':''}${cd?'':' open'}">
+      <div class="chead" onclick="this.parentElement.classList.toggle('open')">
+        <div class="cbox">${cd?'✓':''}</div>
+        <div class="cmeta"><div class="cname">${c.name}</div>
+          <div class="cprog">${cd?'Tarea completada — bloque añadido':'Sub-tareas '+gd+'/'+c.grand.length+' · se marca sola al terminar todas'}</div></div>
+        ${cd?'<span class="autochip">Auto ✓</span>':'<span class="chev">▶</span>'}
+      </div>
+      <div class="gwrap"><div class="gwrap-inner">
+        <div class="ghint">${c.hint}</div>
+        ${c.grand.map(g=>grandHTML(g)).join('')}
+      </div></div></div>`;
+  });
+  body.innerHTML=html; body.scrollTop=0;
+}
+function grandHTML(g){
+  const gd=state[g.id];
+  return `<div class="gchild${gd?' gdone':''}" id="gc-${g.id}">
+    <div class="ghead">
+      <div class="gbox">${gd?'✓':''}</div>
+      <div class="gn">${g.name}</div>
+      ${gd?'':`<button class="gtoggle" onclick="toggleOpts(event,'${g.id}')">Ver opciones ▾</button>`}
+    </div>
+    <div class="opts"><div class="opts-in">
+      ${g.opts.map(o=>`<div class="opt-row" onclick="completeGrand('${g.id}')">
+        <div class="oic" style="background:${oicBg(o.cls)}">${o.ic}</div>
+        <div class="om"><div class="ot">${o.t} <span class="ptag ${o.cls}">${o.tag}</span></div>
+          <div class="od">${o.d}</div></div>
+        <button class="opick">Elegir</button></div>`).join('')}
+      ${g.opts.some(o=>o.cls==='partner')?'<div class="disc"><b>Transparencia:</b> SuccessWay puede recibir una comisión si reservas con un socio. Esto nunca cambia tus opciones de universidad ni su orden.</div>':''}
+    </div></div></div>`;
+}
+function oicBg(c){return c==='partner'?'linear-gradient(155deg,#6c4cf1,#4a30c9)':c==='free'?'linear-gradient(155deg,#34d8a0,#1d9168)':'linear-gradient(155deg,#ffc943,#9a6a12)';}
+function toggleOpts(e,gid){
+  e.stopPropagation();
+  const el=document.getElementById('gc-'+gid); el.classList.toggle('oopen');
+  e.target.textContent=el.classList.contains('oopen')?'Ocultar opciones ▴':'Ver opciones ▾';
+}
+
+function completeGrand(gid){
+  if(state[gid]) return;
+  let theReq,theChild;
+  REQS.forEach(r=>r.children.forEach(c=>c.grand.forEach(g=>{if(g.id===gid){theReq=r;theChild=c;}})));
+  const wasC=childDone(theChild), wasR=reqDone(theReq);
+  state[gid]=true;
+  const nowC=childDone(theChild), nowR=reqDone(theReq);
+
+  renderTabs(); renderReq(activeTab);
+  const climber=document.getElementById('climber');
+  climber.classList.add('hop');
+  setTimeout(()=>climber.classList.remove('hop'),850);
+  layoutBridge();
+
+  if(nowR&&!wasR){ confettiBurst(); fireToast('🏆','¡Requisito conseguido!',theReq.title+' — gran bloque colocado',true); }
+  else if(nowC&&!wasC){ fireToast('✨','¡Tarea completada!',theChild.name+' — bloque añadido',false); }
+  else { fireToast('🧱','¡Bloque colocado!','El puente sube un nivel',false); }
+}
+
+let toastT;
+function fireToast(icon,title,sub,big){
+  const t=document.getElementById('toast');
+  document.getElementById('toastIcon').textContent=icon;
+  document.getElementById('toastTitle').textContent=title;
+  document.getElementById('toastSub').textContent=sub;
+  t.classList.toggle('big',!!big); t.classList.add('show');
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),big?3600:2400);
+}
+function confettiBurst(){
+  const phone=document.querySelector('.phone');
+  const cols=['#6c4cf1','#34d8a0','#ffc943','#ff7a59','#c8f54a','#46c6ff'];
+  for(let i=0;i<46;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.background=cols[i%cols.length];
+    c.style.left=(40+Math.random()*20)+'%'; c.style.top='42%';
+    c.style.borderRadius=Math.random()>.5?'50%':'1px';
+    phone.appendChild(c);
+    const a=Math.random()*Math.PI*2,d=90+Math.random()*170;
+    c.animate([{transform:'translate(0,0) rotate(0)',opacity:1},
+      {transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d+120}px) rotate(${Math.random()*720}deg)`,opacity:0}],
+      {duration:1400+Math.random()*500,easing:'cubic-bezier(.2,.6,.3,1)'});
+    setTimeout(()=>c.remove(),1900);
+  }
+}
+
+function closeChrome(){
+  ['menu','sheet','dlModal'].forEach(id=>document.getElementById(id).classList.remove('on'));
+  document.getElementById('scrim').classList.remove('on');
+  document.getElementById('burger').classList.remove('x');
+}
+function toggleMenu(){
+  const m=document.getElementById('menu'),o=!m.classList.contains('on');
+  closeChrome(); if(o){m.classList.add('on');document.getElementById('scrim').classList.add('on');document.getElementById('burger').classList.add('x');}
+}
+function toggleSheet(){
+  const s=document.getElementById('sheet'),o=!s.classList.contains('on');
+  closeChrome(); if(o){s.classList.add('on');document.getElementById('scrim').classList.add('on');}
+}
+function goBack(){ alert('← Volviendo a /uni-paths (lista de caminos).\n\n(Maqueta — navegación simulada.)'); }
+
+/* ---- Deadline state + modal ---- */
+const deadlineState = { date:'2026-01-04', sent:false };
+const MONTHS_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtDate(iso){
+  if(!iso) return '—';
+  const [y,m,d]=iso.split('-').map(Number);
+  return `${d} ${MONTHS_ES[m-1]} ${y}`;
+}
+function renderDeadlinePill(){
+  const pill=document.getElementById('dlPill');
+  const k=document.getElementById('dlK');
+  const v=document.getElementById('dlV');
+  const ic=document.getElementById('dlIc');
+  if(deadlineState.sent){
+    pill.classList.add('sent');
+    k.textContent='Solicitud enviada';
+    v.textContent='¡Listo! '+fmtDate(deadlineState.date);
+    ic.textContent='✓';
+  }else{
+    pill.classList.remove('sent');
+    k.textContent='Fecha límite';
+    v.textContent=fmtDate(deadlineState.date);
+    ic.textContent='📅';
+  }
+}
+function openDeadline(){
+  document.getElementById('dlInput').value=deadlineState.date;
+  document.getElementById('dlToggle').classList.toggle('on',deadlineState.sent);
+  document.getElementById('dlModal').classList.add('on');
+  document.getElementById('scrim').classList.add('on');
+}
+function closeDeadline(){
+  document.getElementById('dlModal').classList.remove('on');
+  document.getElementById('scrim').classList.remove('on');
+}
+function toggleSent(){
+  const el=document.getElementById('dlToggle');
+  el.classList.toggle('on');
+}
+function saveDeadline(){
+  const newDate=document.getElementById('dlInput').value;
+  const newSent=document.getElementById('dlToggle').classList.contains('on');
+  const wasSent=deadlineState.sent;
+  deadlineState.date=newDate;
+  deadlineState.sent=newSent;
+  renderDeadlinePill();
+  closeDeadline();
+  if(newSent && !wasSent){
+    fireToast('🎉','¡Solicitud enviada!','Marca registrada para esta universidad',true);
+    confettiBurst();
+  } else if(!newSent && wasSent){
+    fireToast('↻','Marca eliminada','La solicitud vuelve a estar pendiente',false);
+  } else {
+    fireToast('💾','Fecha actualizada',fmtDate(newDate),false);
+  }
+}
+renderDeadlinePill();
+
+/* ---- generate the 56 sun-burst teeth around the seal ---- */
+function renderSealTeeth(){
+  const tg=document.querySelector('#teeth');
+  if(!tg) return;
+  const cx=60, cy=60, rIn=54, rOut=60, N=64;
+  let pts='';
+  for(let i=0;i<N;i++){
+    const a1=(i/N)*Math.PI*2;
+    const a2=((i+0.5)/N)*Math.PI*2;
+    const a3=((i+1)/N)*Math.PI*2;
+    const p1=[cx+Math.cos(a1)*rIn, cy+Math.sin(a1)*rIn];
+    const p2=[cx+Math.cos(a2)*rOut,cy+Math.sin(a2)*rOut];
+    const p3=[cx+Math.cos(a3)*rIn, cy+Math.sin(a3)*rIn];
+    pts += `<polygon points="${p1[0].toFixed(1)},${p1[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)} ${p3[0].toFixed(1)},${p3[1].toFixed(1)}"/>`;
+  }
+  tg.innerHTML=pts;
+}
+renderSealTeeth();
+
+window.addEventListener('load',layoutBridge);
+window.addEventListener('resize',layoutBridge);
+setTimeout(layoutBridge,140);
+</script>
+</body>
+</html>
